@@ -1,0 +1,25 @@
+@import 'tailwindcss';
+@import '@nuxt/ui';
+
+@theme static {
+  --color-neon-bg: #1a0b16;
+  --color-brand-950: #450a0a;
+  --color-neon-pink: #ff007f;
+  --color-neon-purple: #2d1b2e;
+  --color-neon-green: #39ff14;
+}
+
+body {
+  @apply bg-neon-bg text-white; /* 深紫色背景 */
+  font-family: 'Inter', sans-serif;
+}
+
+.neon-border {
+  border: 1px solid rgba(255, 0, 127, 0.3);
+  box-shadow: 0 0 15px rgba(255, 0, 127, 0.2);
+}
+
+.neon-text-pink {
+  color: #ff007f;
+  text-shadow: 0 0 10px rgba(255, 0, 127, 0.5);
+}
