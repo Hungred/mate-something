@@ -63,7 +63,7 @@ const menuItems = [
     to: '/public-lounge',
   },
   { label: '配對專區', icon: 'i-heroicons-heart', to: '/match' },
-  { label: '排行榜', icon: 'i-heroicons-trophy', to: '/hall-of-fame' },
+  { label: '排行榜', icon: 'i-heroicons-trophy', to: '/leaderboard' },
   { label: '禮物商店', icon: 'i-heroicons-shopping-bag', to: '/store' },
 ];
 </script>
