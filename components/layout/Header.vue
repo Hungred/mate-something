@@ -40,6 +40,16 @@
           在線: 1,204
         </div>
       </div>
+      <div class="flex items-center gap-4">
+        <USelectMenu
+          :model-value="locale"
+          :items="['zh-TW', 'en']"
+          size="xs"
+          variant="none"
+          class="w-24 bg-white/5 rounded-lg"
+          @update:model-value="onLocaleChange"
+        />
+      </div>
 
       <UPopover>
         <UChip color="pink" size="sm" :show="hasNotifications">
@@ -92,6 +102,11 @@
 
 <script setup>
 const hasNotifications = ref(true);
+const { locale, setLocale } = useI18n();
+
+const onLocaleChange = (value) => {
+  setLocale(value);
+};
 
 const notifications = [
   {
