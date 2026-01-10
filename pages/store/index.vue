@@ -28,7 +28,7 @@
           >
             我的代幣
           </p>
-          <p class="text-2xl font-black text-white">25,840</p>
+          <p class="text-2xl font-black text-white">{{ profile.coins }}</p>
         </div>
         <UButton
           color="pink"
@@ -106,6 +106,8 @@
 </template>
 
 <script setup>
+const userStore = useUserStore();
+const { profile } = userStore;
 const activeCategory = ref('popular');
 const categorys = [
   { name: '熱門', id: 'popular' },
