@@ -27,7 +27,7 @@
       <UButton
         v-for="item in menuItems"
         :key="item.label"
-        :to="item.to"
+        :to="localePath(item.to)"
         variant="ghost"
         color="gray"
         block
@@ -54,6 +54,7 @@
 </template>
 
 <script setup>
+const localePath = useLocalePath();
 const menuItems = [
   { label: '首頁大廳', icon: 'i-heroicons-home', to: '/' },
   {
