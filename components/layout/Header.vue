@@ -29,7 +29,7 @@
         <UIcon name="i-heroicons-banknotes" class="text-yellow-400" />
         <span
           class="text-xs font-bold text-yellow-400 group-hover:text-yellow-300 transition-colors"
-          >25,840</span
+          >{{ profile.coins }}</span
         >
       </NuxtLink>
       <div class="flex justify-between items-center">
@@ -103,6 +103,8 @@
 <script setup>
 const hasNotifications = ref(true);
 const { locale, setLocale } = useI18n();
+const userStore = useUserStore();
+const { profile } = userStore;
 
 const onLocaleChange = (value) => {
   setLocale(value);

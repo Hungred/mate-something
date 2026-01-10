@@ -7,19 +7,21 @@
       class="flex flex-col items-center mb-8 pb-8 border-b border-gray-800 hover:bg-white/5 transition-colors p-2 rounded-xl group"
     >
       <UAvatar
-        src="https://api.dicebear.com/7.x/avataaars/svg?seed=Lucky"
+        :src="profile.avatar"
         size="xl"
         class="mb-3 ring-2 ring-pink-500 group-hover:scale-105 transition-transform"
       />
       <div class="text-center">
         <h3 class="font-bold text-lg flex items-center justify-center gap-1">
-          匿名用戶 #302
+          {{ profile.name }} #{{ profile.room }}
           <UIcon
             name="i-heroicons-pencil-square"
             class="w-3 h-3 text-gray-500"
           />
         </h3>
-        <UBadge color="primary" variant="soft" size="xs">LV.15 社交達人</UBadge>
+        <UBadge color="primary" variant="soft" size="md"
+          >LV.{{ profile.level }} 社交達人</UBadge
+        >
       </div>
     </NuxtLink>
 
@@ -54,6 +56,9 @@
 </template>
 
 <script setup>
+const userStore = useUserStore();
+const { profile } = userStore;
+
 const localePath = useLocalePath();
 const menuItems = [
   { label: '首頁大廳', icon: 'i-heroicons-home', to: '/' },
