@@ -7,7 +7,7 @@
         <div class="flex items-center gap-6">
           <div class="relative group">
             <UAvatar
-              src="https://api.dicebear.com/7.x/avataaars/svg?seed=MateUser"
+              :src="profile.avatar"
               size="3xl"
               class="ring-4 ring-neon-pink shadow-[0_0_20px_rgba(255,0,127,0.3)]"
             />
@@ -18,12 +18,12 @@
             </div>
           </div>
           <div class="mb-2">
-            <h1 class="text-3xl font-black italic">匿名用戶 #302</h1>
-            <p
-              class="text-neon-pink text-xs font-bold tracking-widest uppercase mt-1"
+            <h1 class="text-3xl font-black italic">
+              {{ profile.name }} #{{ profile.room }}
+            </h1>
+            <UBadge color="primary" variant="soft" size="md"
+              >LV.{{ profile.level }} 社交達人</UBadge
             >
-              LV.15 社交傳奇
-            </p>
           </div>
         </div>
       </div>
@@ -39,19 +39,27 @@
           </h3>
           <div class="grid grid-cols-2 gap-4">
             <div class="text-center p-3 bg-white/5 rounded-xl">
-              <p class="text-2xl font-black text-neon-pink">86</p>
+              <p class="text-2xl font-black text-neon-pink">
+                {{ profile.info.win }}
+              </p>
               <p class="text-[10px] text-gray-500 uppercase">勝場</p>
             </div>
             <div class="text-center p-3 bg-white/5 rounded-xl">
-              <p class="text-2xl font-black text-blue-400">72%</p>
+              <p class="text-2xl font-black text-blue-400">
+                {{ profile.info.winRate }}%
+              </p>
               <p class="text-[10px] text-gray-500 uppercase">勝率</p>
             </div>
             <div class="text-center p-3 bg-white/5 rounded-xl">
-              <p class="text-2xl font-black text-yellow-400">1.2k</p>
+              <p class="text-2xl font-black text-yellow-400">
+                {{ profile.info.popularity }}
+              </p>
               <p class="text-[10px] text-gray-500 uppercase">人氣值</p>
             </div>
             <div class="text-center p-3 bg-white/5 rounded-xl">
-              <p class="text-2xl font-black text-green-400">15</p>
+              <p class="text-2xl font-black text-green-400">
+                {{ profile.info.items }}
+              </p>
               <p class="text-[10px] text-gray-500 uppercase">道具數</p>
             </div>
           </div>
@@ -75,20 +83,79 @@
         <UCard class="bg-neon-purple border-none ring-1 ring-white/5">
           <h3 class="text-lg font-bold mb-6">基本設定</h3>
           <div class="space-y-6">
-            <UFormGroup label="顯示暱稱" help="這是在大廳與配對時看到的名稱">
-              <UInput v-model="profile.name" variant="padded" />
-            </UFormGroup>
-
-            <UFormGroup label="個性簽名" help="讓其他包廂一眼記住你">
-              <UTextarea
-                v-model="profile.bio"
-                :rows="3"
-                variant="padded"
-                placeholder="自我介紹一下吧..."
-              />
-            </UFormGroup>
-
-            <UDivider class="my-6" />
+            <div class="flex flex-col">
+              <UFormField label="顯示暱稱" help="這是在大廳與配對時看到的名稱">
+                <UInput
+                  v-model="profileEdit.name"
+                  variant="padded"
+                  :disabled="!isEditingName || isEditingBio"
+                  class="border-1 border-gray-700 rounded-md"
+                />
+              </UFormField>
+              <div class="flex justify-end gap-3">
+                <UButton
+                  v-if="isEditingName"
+                  variant="ghost"
+                  color="gray"
+                  @click="stopEdit('name')"
+                  >取消</UButton
+                >
+                <UButton
+                  v-if="!isEditingName"
+                  variant="soft"
+                  :disabled="isEditingBio"
+                  class="px-8 font-bold bg-neon-pink hover:bg-neon-pink/60 text-white transition-colors"
+                  @click="startEdit('name')"
+                  >編輯
+                </UButton>
+                <UButton
+                  v-if="isEditingName"
+                  variant="soft"
+                  class="px-8 font-bold bg-neon-pink hover:bg-neon-pink/60 text-white transition-colors"
+                  @click="saveProfile('name', profileEdit.name)"
+                  >儲存所有變更
+                </UButton>
+              </div>
+            </div>
+            <div class="flex flex-col">
+              <UFormField label="個性簽名" help="讓其他包廂一眼記住你">
+                <UTextarea
+                  v-model="profileEdit.bio"
+                  :rows="3"
+                  variant="padded"
+                  color="neutral"
+                  size="xl"
+                  :disabled="!isEditingBio || isEditingName"
+                  placeholder="自我介紹一下吧..."
+                  class="border-1 border-gray-700 rounded-md"
+                />
+              </UFormField>
+              <div class="flex justify-end gap-3">
+                <UButton
+                  v-if="isEditingBio"
+                  variant="ghost"
+                  color="gray"
+                  @click="stopEdit('bio')"
+                  >取消</UButton
+                >
+                <UButton
+                  v-if="!isEditingBio"
+                  variant="soft"
+                  :disabled="isEditingName"
+                  class="px-8 font-bold bg-neon-pink hover:bg-neon-pink/60 text-white transition-colors"
+                  @click="startEdit('bio')"
+                  >編輯
+                </UButton>
+                <UButton
+                  v-if="isEditingBio"
+                  variant="soft"
+                  class="px-8 font-bold bg-neon-pink hover:bg-neon-pink/60 text-white transition-colors"
+                  @click="saveProfile('bio', profileEdit.bio)"
+                  >儲存所有變更
+                </UButton>
+              </div>
+            </div>
+            <USeparator class="my-6" />
 
             <div class="space-y-4">
               <div class="flex items-center justify-between">
@@ -98,7 +165,7 @@
                     在排行榜與公開交誼廳中隱藏頭像
                   </p>
                 </div>
-                <UToggle v-model="settings.stealth" color="pink" />
+                <USwitch v-model="profile.stealth" color="neutral" />
               </div>
 
               <div class="flex items-center justify-between">
@@ -108,19 +175,10 @@
                     是否允許其他包廂向您發起 VS 對決
                   </p>
                 </div>
-                <UToggle v-model="settings.acceptMatch" color="pink" />
+                <USwitch v-model="profile.acceptMatch" color="neutral" />
               </div>
             </div>
           </div>
-
-          <template #footer>
-            <div class="flex justify-end gap-3">
-              <UButton variant="ghost" color="gray">取消</UButton>
-              <UButton color="pink" class="px-8 font-bold"
-                >儲存所有變更</UButton
-              >
-            </div>
-          </template>
         </UCard>
       </div>
     </div>
@@ -128,13 +186,77 @@
 </template>
 
 <script setup>
-const profile = ref({
-  name: '匿名用戶 #302',
-  bio: '目前在 302 包廂，杰倫粉歡迎來 PK！不喝酒，只比歌喉 🎤',
-});
+const userStore = useUserStore();
+const { profile } = userStore;
 
-const settings = ref({
-  stealth: false,
-  acceptMatch: true,
-});
+const profileEdit = ref({ ...profile }); // 暫存一份
+
+const { locale } = useI18n();
+const toast = useToast();
+const isSaving = ref(false);
+const isEditingName = ref(false);
+const isEditingBio = ref(false);
+
+const startEdit = (type) => {
+  if (type === 'name') {
+    isEditingName.value = true;
+  } else {
+    isEditingBio.value = true;
+  }
+};
+
+const stopEdit = (type) => {
+  if (type === 'name') {
+    isEditingName.value = false;
+  } else {
+    isEditingBio.value = false;
+  }
+  profileEdit.value[type] = profile[type];
+};
+
+const saveProfile = async (type, text) => {
+  isSaving.value = true;
+  // 1. 發送給 Gemini 審查
+  try {
+    const { isSafe, reason, suggestion } = await $fetch('/api/moderate', {
+      method: 'POST',
+      body: {
+        text: text,
+        locale: locale.value,
+      },
+    });
+    if (!isSafe) {
+      // 2. 如果不安全，顯示警告
+      toast.add({
+        title: '內容不當',
+        description: `原因：${reason}。建議：${suggestion}`,
+        icon: 'i-heroicons-shield-check',
+        color: 'red',
+        // 增加自訂霓虹樣式
+        ui: {
+          background: 'bg-[#1a0b16] border border-red-500/50',
+          ring: 'ring-1 ring-red-500/50 shadow-[0_0_10px_rgba(239,68,68,0.4)]',
+        },
+      });
+      return;
+    }
+
+    // 3. 安全則執行儲存邏輯
+    toast.add({
+      title: '個人資料更新成功',
+      icon: 'i-heroicons-check-circle',
+      color: 'primary',
+    });
+
+    profile.name = profileEdit.value.name;
+    profile.bio = profileEdit.value.bio;
+
+    stopEdit(type);
+  } catch (error) {
+    toast.add({ title: '連線異常', color: 'gray' });
+  } finally {
+    isSaving.value = false;
+    stopEdit();
+  }
+};
 </script>

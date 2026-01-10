@@ -1,7 +1,7 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-  modules: ['@nuxt/image', '@nuxt/ui', '@nuxtjs/i18n'],
+  modules: ['@nuxt/image', '@nuxt/ui', '@nuxtjs/i18n', '@pinia/nuxt'],
   css: ['~/assets/css/main.css'],
   i18n: {
     strategy: 'prefix_except_default',
@@ -18,5 +18,8 @@ export default defineNuxtConfig({
       alwaysRedirect: true,
       fallbackLocale: 'zh-TW',
     },
+  },
+  runtimeConfig: {
+    geminiApiKey: '',
   },
 });
