@@ -39,72 +39,16 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <UCard
-        v-for="item in feedItems"
-        :key="item.id"
-        class="group bg-neon-purple border-none ring-1 ring-white/5 hover:ring-neon-pink/50 transition-all duration-300"
-      >
-        <div class="relative h-40 -m-4 mb-4 overflow-hidden rounded-t-xl">
-          <img
-            :src="item.image"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-          />
-          <div
-            class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"
-          ></div>
-          <UBadge color="pink" class="absolute top-3 right-3 shadow-lg">{{
-            item.tag
-          }}</UBadge>
-          <div class="absolute bottom-3 left-3 flex items-center gap-2">
-            <UAvatar
-              :src="item.hostAvatar"
-              size="xs"
-              class="ring-1 ring-white"
-            />
-            <span class="text-xs font-bold">{{ item.roomName }}</span>
-          </div>
-        </div>
-
-        <div class="space-y-3">
-          <h3 class="text-lg font-bold line-clamp-1">{{ item.title }}</h3>
-          <p class="text-xs text-gray-400 line-clamp-2 leading-relaxed">
-            {{ item.description }}
-          </p>
-
-          <div
-            class="flex items-center justify-between text-[10px] text-gray-500 uppercase tracking-wider"
-          >
-            <span>徵求人數 {{ item.currentPeople }}/{{ item.maxPeople }}</span>
-            <span class="text-neon-pink">{{ item.timeLeft }}</span>
-          </div>
-          <UProgress
-            :value="(item.currentPeople / item.maxPeople) * 100"
-            color="pink"
-            size="xs"
-          />
-
-          <div class="flex flex-row pt-2 gap-2">
-            <UButton
-              block
-              variant="soft"
-              class="bg-neon-pink group-hover:bg-neon-pink/60 text-white transition-colors flex-1"
-              >應徵加入
-            </UButton>
-            <UButton
-              block
-              to="/chat/301"
-              variant="soft"
-              class="bg-neon-pink group-hover:bg-neon-pink/60 text-white transition-colors flex-1"
-              >私訊房主
-            </UButton>
-          </div>
-        </div>
-      </UCard>
+      <div v-for="item in feedItems" :key="item.id">
+        <EventCard :event="item"></EventCard>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import EventCard from '~/components/card/EventCard.vue';
+
 const activeTab = ref('All');
 
 const categories = [
