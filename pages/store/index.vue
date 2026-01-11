@@ -30,27 +30,26 @@
           </p>
           <p class="text-2xl font-black text-white">{{ profile.coins }}</p>
         </div>
-        <UButton
+        <EButton
           color="pink"
           variant="ghost"
           icon="i-heroicons-plus-circle"
           size="xs"
           class="ml-auto"
-        />
+        ></EButton>
       </div>
     </header>
 
     <div class="flex gap-4 mb-8">
-      <UButton
+      <EButton
         v-for="cat in categorys"
         :key="cat.id"
-        variant="soft"
-        :class="activeCategory === cat.id ? 'bg-neon-pink' : 'bg-gray-700'"
-        class="rounded-full px-6 transition-all text-white hover:bg-neon-pink"
+        variant="solid"
+        :color="activeCategory === cat.id ? 'pink' : 'gray'"
         @click="activeCategory = cat.id"
+        class="rounded-full px-6"
+        >{{ cat.name }}</EButton
       >
-        {{ cat.name }}
-      </UButton>
     </div>
 
     <div
@@ -89,16 +88,14 @@
             <span class="text-xs">$</span>
             <span>{{ item.price }}</span>
           </div>
-
-          <UButton
+          <EButton
             block
             color="pink"
             size="xs"
             variant="solid"
             class="font-bold"
+            >購買</EButton
           >
-            購買
-          </UButton>
         </div>
       </UCard>
     </div>

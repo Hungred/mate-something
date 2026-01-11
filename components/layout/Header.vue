@@ -53,15 +53,14 @@
 
       <UPopover>
         <UChip color="pink" size="sm" :show="hasNotifications">
-          <UButton
-            icon="i-heroicons-bell"
+          <EButton
+            color="pink"
             variant="ghost"
-            color="gray"
-            class="hover:text-neon-pink transition-colors"
-          />
+            icon="i-heroicons-bell"
+          ></EButton>
         </UChip>
 
-        <template #panel>
+        <template #content>
           <div
             class="p-4 w-80 bg-[#241322] border border-white/10 rounded-xl shadow-2xl"
           >
@@ -69,7 +68,7 @@
               class="flex justify-between items-center mb-4 border-b border-white/5 pb-2"
             >
               <h3 class="font-bold text-sm">即時通知</h3>
-              <UButton variant="link" size="xs" color="gray">全部已讀</UButton>
+              <EButton color="gray" variant="solid" size="xs">全部已讀</EButton>
             </div>
             <div class="space-y-4 max-h-60 overflow-y-auto">
               <div

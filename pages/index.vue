@@ -14,9 +14,9 @@
           <h1 class="text-3xl font-bold neon-text-pink">晚上好，媒神麼？</h1>
           <p class="text-gray-400">目前店內共有 128 位用戶在線互動中</p>
         </div>
-        <UButton color="pink" variant="solid" size="lg" icon="i-heroicons-plus">
-          發布我的需求
-        </UButton>
+        <EButton color="pink" variant="solid" size="lg" icon="i-heroicons-plus"
+          >發布我的需求</EButton
+        >
       </header>
 
       <section class="mb-10">
@@ -70,11 +70,7 @@
                 <p class="text-xs text-gray-500">5 分鐘前發布 · 3 人已應徵</p>
               </div>
             </div>
-            <UButton
-              variant="ghost"
-              class="bg-neon-pink hover:bg-neon-pink/60 text-white"
-              >查看詳情</UButton
-            >
+            <EButton color="pink" variant="solid">查看詳情</EButton>
           </div>
         </div>
       </section>

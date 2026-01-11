@@ -73,8 +73,8 @@
           <p class="text-xs text-gray-500 mb-4 font-mono">
             SSID: HolidayKTV_Guest_5G
           </p>
-          <UButton block color="gray" variant="soft" size="xs"
-            >重新偵測 WiFi</UButton
+          <EButton block color="gray" variant="soft" size="xs"
+            >重新偵測 WiFi</EButton
           >
         </UCard>
       </div>
@@ -93,28 +93,30 @@
                 />
               </UFormField>
               <div class="flex justify-end gap-3">
-                <UButton
+                <EButton
                   v-if="isEditingName"
-                  variant="ghost"
+                  variant="soft"
                   color="gray"
                   @click="stopEdit('name')"
-                  >取消</UButton
+                  >取消</EButton
                 >
-                <UButton
+                <EButton
                   v-if="!isEditingName"
-                  variant="soft"
+                  variant="solid"
+                  color="pink"
                   :disabled="isEditingBio"
-                  class="px-8 font-bold bg-neon-pink hover:bg-neon-pink/60 text-white transition-colors"
+                  class="px-8 font-bold"
                   @click="startEdit('name')"
-                  >編輯
-                </UButton>
-                <UButton
+                  >編輯</EButton
+                >
+                <EButton
                   v-if="isEditingName"
-                  variant="soft"
-                  class="px-8 font-bold bg-neon-pink hover:bg-neon-pink/60 text-white transition-colors"
+                  variant="solid"
+                  color="pink"
+                  class="px-8 font-bold"
                   @click="saveProfile('name', profileEdit.name)"
-                  >儲存所有變更
-                </UButton>
+                  >儲存所有變更</EButton
+                >
               </div>
             </div>
             <div class="flex flex-col">
@@ -131,28 +133,30 @@
                 />
               </UFormField>
               <div class="flex justify-end gap-3">
-                <UButton
+                <EButton
                   v-if="isEditingBio"
-                  variant="ghost"
+                  variant="soft"
                   color="gray"
                   @click="stopEdit('bio')"
-                  >取消</UButton
+                  >取消</EButton
                 >
-                <UButton
+                <EButton
                   v-if="!isEditingBio"
-                  variant="soft"
+                  variant="solid"
+                  color="pink"
                   :disabled="isEditingName"
-                  class="px-8 font-bold bg-neon-pink hover:bg-neon-pink/60 text-white transition-colors"
+                  class="px-8 font-bold"
                   @click="startEdit('bio')"
-                  >編輯
-                </UButton>
-                <UButton
+                  >編輯</EButton
+                >
+                <EButton
                   v-if="isEditingBio"
-                  variant="soft"
-                  class="px-8 font-bold bg-neon-pink hover:bg-neon-pink/60 text-white transition-colors"
+                  variant="solid"
+                  color="pink"
+                  class="px-8 font-bold"
                   @click="saveProfile('bio', profileEdit.bio)"
-                  >儲存所有變更
-                </UButton>
+                  >儲存所有變更</EButton
+                >
               </div>
             </div>
             <USeparator class="my-6" />

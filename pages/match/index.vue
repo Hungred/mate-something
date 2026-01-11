@@ -140,17 +140,10 @@
         </p>
       </div>
       <div class="flex gap-4 w-full md:w-auto">
-        <UButton
-          variant="ghost"
-          class="flex-1 md:flex-none justify-center px-8 bg-[#22101c] text-white"
-          >略過</UButton
+        <EButton color="gray" variant="solid">略過</EButton>
+        <EButton color="pink" variant="solid" icon="i-heroicons-bolt"
+          >開始派對模式</EButton
         >
-        <UButton
-          class="flex-1 md:flex-none justify-center px-8 font-black animate-pulse bg-neon-pink hover:bg-neon-pink/60"
-          icon="i-heroicons-bolt"
-        >
-          開始派對模式
-        </UButton>
       </div>
     </div>
   </div>

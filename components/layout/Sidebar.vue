@@ -42,15 +42,9 @@
     </nav>
 
     <div class="mt-auto pt-4 border-t border-gray-800">
-      <UButton
-        variant="ghost"
-        color="gray"
-        icon="i-heroicons-cog-6-tooth"
-        block
-        class="justify-start"
+      <EButton color="gray" variant="ghost" icon="i-heroicons-cog-6-tooth"
+        >系統設定</EButton
       >
-        系統設定
-      </UButton>
     </div>
   </aside>
 </template>
