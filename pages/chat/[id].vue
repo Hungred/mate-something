@@ -4,12 +4,12 @@
       class="p-4 border-b border-white/5 bg-[#241322]/50 flex items-center justify-between"
     >
       <div class="flex items-center gap-3">
-        <UButton
+        <EButton
           icon="i-heroicons-arrow-left"
           variant="ghost"
           color="gray"
           @click="$router.back()"
-        />
+        ></EButton>
         <div class="relative">
           <UAvatar :src="chatPartner.avatar" size="sm" />
           <span
@@ -22,18 +22,18 @@
         </div>
       </div>
       <div class="flex gap-2">
-        <UButton
+        <EButton
           icon="i-heroicons-phone"
           variant="ghost"
           color="gray"
           size="sm"
-        />
-        <UButton
+        ></EButton>
+        <EButton
           icon="i-heroicons-ellipsis-vertical"
           variant="ghost"
           color="gray"
           size="sm"
-        />
+        ></EButton>
       </div>
     </div>
 
@@ -81,12 +81,12 @@
 
     <div class="p-4 bg-[#241322]/80 border-t border-white/5 backdrop-blur-md">
       <div class="flex items-center gap-3">
-        <UButton
+        <EButton
           icon="i-heroicons-face-smile"
           variant="ghost"
           color="gray"
           size="sm"
-        />
+        ></EButton>
         <UInput
           v-model="newMessage"
           placeholder="輸入訊息..."
@@ -95,12 +95,12 @@
           ui="input: { base: 'bg-white/5 border-none focus:ring-1 focus:ring-neon-pink rounded-full px-4 text-sm' }"
           @keyup.enter="sendMessage"
         />
-        <UButton
+        <EButton
           icon="i-heroicons-paper-airplane"
           color="pink"
-          class="rounded-full shadow-[0_0_15px_rgba(255,0,127,0.4)]"
+          variant="solid"
           @click="sendMessage"
-        />
+        ></EButton>
       </div>
     </div>
   </div>

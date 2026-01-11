@@ -40,19 +40,17 @@
       />
 
       <div class="flex flex-row pt-2 gap-2">
-        <UButton
+        <EButton block color="pink" variant="solid" class="flex-1"
+          >應徵加入</EButton
+        >
+        <EButton
           block
-          variant="soft"
-          class="bg-neon-pink group-hover:bg-neon-pink/60 text-white transition-colors flex-1"
-          >應徵加入
-        </UButton>
-        <UButton
-          block
+          color="pink"
+          variant="solid"
+          class="flex-1"
           to="/chat/301"
-          variant="soft"
-          class="bg-neon-pink group-hover:bg-neon-pink/60 text-white transition-colors flex-1"
-          >私訊房主
-        </UButton>
+          >私訊房主</EButton
+        >
       </div>
     </div>
   </UCard>
