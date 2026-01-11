@@ -22,4 +22,13 @@ export default defineNuxtConfig({
   runtimeConfig: {
     geminiApiKey: '',
   },
+  ui: {
+    theme: {
+      colors: ['pink', 'gray'],
+    },
+  },
+  components: [
+    { path: '~/components/common', pathPrefix: false }, // 取消 common namespace
+    { path: '~/components', pathPrefix: true }, // 其他資料夾維持預設
+  ],
 });
