@@ -31,4 +31,8 @@ export default defineNuxtConfig({
     { path: '~/components/common', pathPrefix: false }, // 取消 common namespace
     { path: '~/components', pathPrefix: true }, // 其他資料夾維持預設
   ],
+  nitro: {
+    // 強制指定使用 node-server，這樣 Prisma 就不會亂跑
+    preset: 'node-server',
+  },
 });

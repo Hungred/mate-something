@@ -1,0 +1,92 @@
+generator client {
+  provider   = "prisma-client-js"
+  engineType = "binary"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model events {
+  event_id   Int       @id @default(autoincrement())
+  user_id    String?
+  title      String?   @db.Text
+  content    String?   @db.Text
+  is_active  Boolean?  @default(false)
+  created_at DateTime? @default(now()) @db.DateTime(0)
+  users      users?    @relation(fields: [user_id], references: [user_id], onUpdate: NoAction, map: "events_ibfk_1")
+
+  @@index([user_id], map: "user_id")
+}
+
+model rooms {
+  room_id                    Int           @id @default(autoincrement())
+  name                       String        @db.VarChar(50)
+  title                      String?       @db.Text
+  status                     rooms_status? @default(idle)
+  tag                        Json?
+  viewer_count               Int?          @default(0)
+  host_id                    String?
+  created_at                 DateTime?     @default(now()) @db.DateTime(0)
+  users_rooms_host_idTousers users?        @relation("rooms_host_idTousers", fields: [host_id], references: [user_id], onUpdate: NoAction, map: "rooms_ibfk_1")
+  users_users_room_idTorooms users[]       @relation("users_room_idTorooms")
+
+  @@index([host_id], map: "host_id")
+}
+
+model shop_items {
+  items_id    String               @id @db.VarChar(20)
+  name        String               @db.VarChar(50)
+  category    shop_items_category?
+  price       Int
+  description String?              @db.Text
+  image_url   String?              @db.VarChar(255)
+  is_active   Boolean?             @default(false)
+  stock       Int?                 @default(-1)
+  user_items  user_items[]
+}
+
+model user_items {
+  transaction_id Int        @id @default(autoincrement())
+  user_id        String
+  item_id        String     @db.VarChar(20)
+  quantity       Int?       @default(1)
+  created_at     DateTime?  @default(now()) @db.DateTime(0)
+  users          users      @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "user_items_ibfk_1")
+  shop_items     shop_items @relation(fields: [item_id], references: [items_id], onDelete: Cascade, onUpdate: NoAction, map: "user_items_ibfk_2")
+
+  @@index([item_id], map: "item_id")
+  @@index([user_id], map: "user_id")
+}
+
+model users {
+  user_id                    String       @id
+  name                       String       @db.VarChar(50)
+  bio                        String?      @db.Text
+  level                      Int?         @default(1)
+  coins                      Int?         @default(100)
+  avatar_url                 String?      @db.VarChar(255)
+  stealth                    Boolean?     @default(false)
+  accept_match               Boolean?     @default(false)
+  created_at                 DateTime?    @default(now()) @db.DateTime(0)
+  room_id                    Int?
+  events                     events[]
+  rooms_rooms_host_idTousers rooms[]      @relation("rooms_host_idTousers")
+  user_items                 user_items[]
+  rooms_users_room_idTorooms rooms?       @relation("users_room_idTorooms", fields: [room_id], references: [room_id], onUpdate: NoAction, map: "users_ibfk_1")
+
+  @@index([room_id], map: "room_id")
+}
+
+enum shop_items_category {
+  popular
+  interactive
+  luxury
+  special
+}
+
+enum rooms_status {
+  idle
+  singing
+  battle
+}
