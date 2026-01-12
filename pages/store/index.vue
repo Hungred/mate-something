@@ -67,7 +67,12 @@
             class="text-6xl group-hover:scale-125 transition-transform duration-500"
             >{{ item.icon }}</span
           >
-
+          <img
+            v-if="item.image_url"
+            :src="`${item.image_url}`"
+            alt=""
+            class="w-[150px] h-[150px]"
+          />
           <div
             v-if="item.hot"
             class="absolute top-2 left-2 bg-red-600 text-[10px] font-bold px-2 py-0.5 rounded italic"
@@ -106,90 +111,43 @@
 const userStore = useUserStore();
 const { profile } = userStore;
 const activeCategory = ref('popular');
+
+const {
+  data: products,
+  pending,
+  error,
+} = await useAsyncData('shop-items', () => $fetch('/api/shop/items'), {
+  // default: () => [],
+  lazy: false,
+});
+
+// // 診斷 1：檢查伺服器端有沒有報錯
+// if (error.value) {
+//   console.error('API 請求出錯了:', error.value);
+// }
+
+// // 診斷 2：檢查現在是誰在跑
+// if (import.meta.server) {
+//   console.log('伺服器正在抓資料...', products.value?.length);
+// }
+// if (import.meta.client) {
+//   console.log(
+//     '瀏覽器正在檢查快取...',
+//     products.value?.length,
+//     useNuxtApp().payload.data
+//   );
+// }
+
 const categorys = [
   { name: '熱門', id: 'popular' },
-  { name: '互動道具', id: 'Interactive' },
+  { name: '互動道具', id: 'interactive' },
   { name: '豪華禮物', id: 'luxury' },
   { name: '特殊特效', id: 'special' },
 ];
-const products = [
-  {
-    name: '霓虹喇叭',
-    icon: '📢',
-    price: 500,
-    desc: '向全店包廂發送廣播',
-    hot: true,
-    category: '互動道具',
-    categoryId: 'Interactive',
-  },
-  {
-    name: '隱身斗篷',
-    icon: '👻',
-    price: 1200,
-    desc: '隱藏所在的包廂號碼',
-    hot: false,
-    category: '互動道具',
-    categoryId: 'Interactive',
-  },
-  {
-    name: '香檳塔',
-    icon: '🍾',
-    price: 5000,
-    desc: '送給對方包廂的最高敬意',
-    hot: true,
-    category: '豪華禮物',
-    categoryId: 'luxury',
-  },
-  {
-    name: '愛心火箭',
-    icon: '🚀',
-    price: 9999,
-    desc: '霸佔所有人的螢幕 10 秒',
-    hot: true,
-    category: '豪華禮物',
-    categoryId: 'luxury',
-  },
-  {
-    name: '歌神麥克風',
-    icon: '🎤',
-    price: 300,
-    desc: '聊天時名字帶有光輝',
-    hot: false,
-    category: '特殊特效',
-    categoryId: 'special',
-  },
-  {
-    name: '擋酒護盾',
-    icon: '🛡️',
-    price: 800,
-    desc: '拒絕一次挑戰不扣分',
-    hot: false,
-    category: '互動道具',
-    categoryId: 'Interactive',
-  },
-  {
-    name: '粉紅泡泡',
-    icon: '🫧',
-    price: 200,
-    desc: '讓對話框充滿浪漫氣息',
-    hot: false,
-    category: '特殊特效',
-    categoryId: 'special',
-  },
-  {
-    name: '皇冠',
-    icon: '👑',
-    price: 2500,
-    desc: '在排行榜上顯示特殊圖標',
-    hot: true,
-    category: '特殊特效',
-    categoryId: 'special',
-  },
-];
 
 const filteredProducts = computed(() => {
-  if (activeCategory.value === 'popular') return products.filter((p) => p.hot);
-  return products.filter((p) => p.categoryId === activeCategory.value);
+  if (!products.value) return [];
+  return products.value.filter((p) => p.category === activeCategory.value);
 });
 </script>
 
