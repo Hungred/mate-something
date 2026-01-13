@@ -14,10 +14,16 @@
           <h1 class="text-3xl font-bold neon-text-pink">晚上好，媒神麼？</h1>
           <p class="text-gray-400">目前店內共有 128 位用戶在線互動中</p>
         </div>
-        <EButton color="pink" variant="solid" size="lg" icon="i-heroicons-plus"
+        <EButton
+          color="pink"
+          variant="solid"
+          size="lg"
+          icon="i-heroicons-plus"
+          @click="showRequestModal = true"
           >發布我的需求</EButton
         >
       </header>
+      <CreateRequest v-model="showRequestModal" @success="handleRefresh" />
 
       <section class="mb-10">
         <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
@@ -77,3 +83,11 @@
     </main>
   </div>
 </template>
+<script setup>
+const showRequestModal = ref(false);
+
+const handleRefresh = () => {
+  // refreshRequests()
+  console.log('需求發布成功，準備重新整理列表');
+};
+</script>
