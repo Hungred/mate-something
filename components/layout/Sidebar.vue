@@ -13,7 +13,7 @@
       />
       <div class="text-center">
         <h3 class="font-bold text-lg flex items-center justify-center gap-1">
-          {{ profile.name }} #{{ profile.room }}
+          {{ profile.name }} #{{ profile.room_name }}
           <UIcon
             name="i-heroicons-pencil-square"
             class="w-3 h-3 text-gray-500"

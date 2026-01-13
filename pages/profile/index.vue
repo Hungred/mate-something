@@ -19,7 +19,7 @@
           </div>
           <div class="mb-2">
             <h1 class="text-3xl font-black italic">
-              {{ profile.name }} #{{ profile.room }}
+              {{ profile.name }} #{{ profile.room_name }}
             </h1>
             <UBadge color="primary" variant="soft" size="md"
               >LV.{{ profile.level }} 社交達人</UBadge
