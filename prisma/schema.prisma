@@ -31,6 +31,8 @@ model rooms {
   users_rooms_host_idTousers users?        @relation("rooms_host_idTousers", fields: [host_id], references: [user_id], onUpdate: NoAction, map: "rooms_ibfk_1")
   users_users_room_idTorooms users[]       @relation("users_room_idTorooms")
 
+  requests requests[]
+
   @@index([host_id], map: "host_id")
 }
 
@@ -89,4 +91,17 @@ enum rooms_status {
   idle
   singing
   battle
+}
+
+model requests {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String?  @db.Text
+  room_id   Int?     // 改名 roomNumber -> room_id
+  status    String   @default("open")
+  createdAt DateTime @default(now())
+
+  room rooms? @relation(fields: [room_id], references: [room_id])
+
+  @@map("requests")
 }
