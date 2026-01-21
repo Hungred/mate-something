@@ -51,7 +51,7 @@
 
 <script setup>
 const userStore = useUserStore();
-const { profile } = userStore;
+const { profile } = storeToRefs(userStore);
 
 const localePath = useLocalePath();
 const menuItems = [
