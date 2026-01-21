@@ -77,6 +77,27 @@
             >重新偵測 WiFi</EButton
           >
         </UCard>
+        <UCard class="bg-neon-purple border-none ring-1 ring-white/5">
+          <h3
+            class="text-sm font-bold text-gray-400 mb-4 flex items-center gap-2"
+          >
+            <UIcon name="ic:baseline-people" /> 所有包廂用戶列表
+          </h3>
+          <div class="grid grid-cols-2 gap-4">
+            <div
+              v-for="user in userList"
+              class="text-center p-3 bg-white/5 rounded-xl border-1 border-gray-800 hover:border-pink-500/50 transition-colors"
+              @click="switchUser(user.user_id)"
+            >
+              <p class="text-2xl font-black text-neon-pink">
+                {{ user.name }}
+              </p>
+              <p class="text-[10px] text-gray-500 uppercase">
+                {{ user.room_name }} #{{ user.room_id }}
+              </p>
+            </div>
+          </div>
+        </UCard>
       </div>
 
       <div class="lg:col-span-2 space-y-6">
@@ -191,9 +212,9 @@
 
 <script setup>
 const userStore = useUserStore();
-const { profile } = userStore;
-
-const profileEdit = ref({ ...profile }); // 暫存一份
+const { getUser } = userStore;
+const { profile, userList } = storeToRefs(userStore);
+const profileEdit = ref({ ...profile.value });
 
 const { locale } = useI18n();
 const toast = useToast();
@@ -263,4 +284,16 @@ const saveProfile = async (type, text) => {
     stopEdit();
   }
 };
+
+const switchUser = (userId) => {
+  getUser(userId);
+};
+
+watch(
+  profile,
+  (newProfile) => {
+    profileEdit.value = { ...newProfile };
+  },
+  { deep: true }
+);
 </script>

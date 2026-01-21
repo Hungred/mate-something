@@ -9,6 +9,7 @@
 </template>
 <script setup>
 const userStore = useUserStore();
-const { getUser, profile } = userStore;
+const { getUser, getUserList } = userStore;
 getUser();
+getUserList();
 </script>
