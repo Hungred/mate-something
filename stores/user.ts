@@ -32,6 +32,8 @@ export const useUserStore = defineStore('user', () => {
     },
   });
 
+  const userList = ref<UserFromAPI[]>([]);
+
   const isVip = computed(() => profile.value.level > 10);
 
   function updateProfile(
@@ -52,9 +54,7 @@ export const useUserStore = defineStore('user', () => {
     loading.value = true;
     error.value = null;
     try {
-      const data = await $fetch<UserFromAPI>('/api/user', {
-        query: { id: userId },
-      });
+      const data = await $fetch<UserFromAPI>(`/api/users/${userId}`);
       if (!data) {
         throw new Error('User not found');
       }
@@ -83,6 +83,27 @@ export const useUserStore = defineStore('user', () => {
       loading.value = false;
     }
   }
+  async function getUserList() {
+    try {
+      const data = await $fetch<UserFromAPI[]>('/api/users');
+      if (!data) {
+        throw new Error('User list not found');
+      }
+      userList.value = data.map((item) => {
+        return {
+          ...item,
+          info: {
+            win: 86,
+            winRate: 72,
+            popularity: 1200,
+            items: 15,
+          },
+        };
+      });
+    } catch (err) {
+      console.error('fetch user list failed', err);
+    }
+  }
 
   return {
     profile,
@@ -90,5 +111,7 @@ export const useUserStore = defineStore('user', () => {
     updateProfile,
     addCoins,
     getUser,
+    getUserList,
+    userList,
   };
 });
