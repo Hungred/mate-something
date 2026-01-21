@@ -35,4 +35,10 @@ export default defineNuxtConfig({
     // 強制指定使用 node-server，這樣 Prisma 就不會亂跑
     preset: 'node-server',
   },
+  app: {
+    head: {
+      title: 'Mate Something 媒神麼',
+      link: [{ rel: 'icon', type: 'image/x-icon', href: 'logo.ico' }],
+    },
+  },
 });
