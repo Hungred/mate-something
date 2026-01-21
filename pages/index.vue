@@ -59,35 +59,117 @@
 
       <section>
         <h2 class="text-xl font-bold mb-4">公開交誼廳需求</h2>
+
         <div class="space-y-4">
           <div
-            v-for="n in 5"
-            :key="n"
+            v-if="!matchList || matchList.length === 0"
+            class="flex items-center justify-center p-4 bg-[#241322] rounded-xl border border-gray-800 hover:border-pink-500/50 transition-colors"
+          >
+            快去發佈需求，揪人一起嗨吧！
+          </div>
+          <div
+            v-for="item in matchList"
+            :key="index"
             class="flex items-center justify-between p-4 bg-[#241322] rounded-xl border border-gray-800 hover:border-pink-500/50 transition-colors"
           >
             <div class="flex items-center gap-4">
               <div
-                class="w-12 h-12 rounded-full bg-pink-500/20 flex items-center justify-center text-pink-500 font-bold"
+                class="w-auto h-12 p-2 rounded-full bg-pink-500/20 flex items-center justify-center text-pink-500 font-bold"
               >
-                {{ 300 + n }}
+                {{ item.room_name }}
               </div>
               <div>
-                <p class="font-bold">需要擋酒部隊！性別不限</p>
-                <p class="text-xs text-gray-500">5 分鐘前發布 · 3 人已應徵</p>
+                <p class="font-bold">{{ item.title }}</p>
+                <p class="text-xs text-gray-500">
+                  {{ getReleaseTime(item.createdAt) }}前發布 · 3 人已應徵
+                </p>
               </div>
             </div>
-            <EButton color="pink" variant="solid">查看詳情</EButton>
+            <EButton
+              color="pink"
+              variant="solid"
+              @click="handleClickMatch(item)"
+              >查看詳情</EButton
+            >
           </div>
         </div>
       </section>
+      <UModal
+        v-if="showMatchDetail"
+        v-model:open="showMatchDetail"
+        class="bg-[#241322] ring-1 ring-pink-500/30"
+      >
+        <template #header>
+          <div class="flex items-center justify-between w-full">
+            <h3 class="text-xl font-bold neon-text-pink">
+              ROOM {{ matchDetail.room_id }} 的需求詳情
+            </h3>
+            <UButton
+              color="gray"
+              variant="ghost"
+              icon="i-heroicons-x-mark-20-solid"
+              class="-my-1"
+              @click="showMatchDetail = false"
+            />
+          </div>
+        </template>
+        <template #body>
+          <h2>{{ matchDetail.title }}</h2>
+          <div class="mt-2 p-2 opacity-60 border-1 rounded-md">
+            {{ matchDetail.content }}
+          </div>
+        </template>
+      </UModal>
     </main>
   </div>
 </template>
 <script setup>
+const userStore = useUserStore();
+const { profile } = storeToRefs(userStore);
 const showRequestModal = ref(false);
+const showMatchDetail = ref(false);
+const matchDetail = ref({});
 
 const handleRefresh = () => {
-  // refreshRequests()
-  console.log('需求發布成功，準備重新整理列表');
+  refresh();
+};
+
+const handleClickMatch = (item) => {
+  matchDetail.value = item;
+  showMatchDetail.value = true;
+};
+
+const {
+  data: matchList,
+  pending,
+  error,
+  refresh,
+} = useAsyncData(
+  'match-lists',
+  () =>
+    $fetch('/api/requests/get', {
+      params: { room_id: profile.value.room_id },
+    }),
+  {
+    lazy: true,
+    immediate: false,
+  }
+);
+
+watch(
+  () => profile.value.room_id,
+  (roomId) => {
+    if (!roomId) return;
+    refresh();
+  },
+  { immediate: true }
+);
+
+const getReleaseTime = (date) => {
+  const createTime = new Date(date).getTime();
+  const now = Date.now();
+  const diff = now - createTime; // 毫秒差
+
+  return formatDate(diff, false);
 };
 </script>
