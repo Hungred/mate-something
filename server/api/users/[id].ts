@@ -1,10 +1,10 @@
+// server/api/users/[id].ts
 export const runtime = 'nodejs';
 import prisma from '~/server/utils/prisma';
 import { defineEventHandler, getQuery } from 'h3';
 
 export default defineEventHandler(async (event) => {
-  const query = getQuery(event);
-  const id = query.id;
+  const id = event.context.params.id; // 取 URL path 參數
   try {
     const user = await prisma.users.findUnique({
       where: { user_id: id },
