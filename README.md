@@ -15,7 +15,7 @@
 - **前端框架**: [Nuxt 3](https://nuxt.com/) (Vue 3, Vite)
 - **UI 框架**: [Nuxt UI](https://ui.nuxt.com/) (Tailwind CSS)
 - **資料庫 ORM**: [Prisma](https://www.prisma.io/)
-- **資料庫**: MySQL
+- **資料庫**: MySQL -> PostgreSQL
 - **後端引擎**: Nitro (Nuxt 3 內建)
 
 ## 🚀 快速啟動
