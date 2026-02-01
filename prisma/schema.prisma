@@ -4,104 +4,89 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
 }
 
 model events {
   event_id   Int       @id @default(autoincrement())
-  user_id    String?
-  title      String?   @db.Text
-  content    String?   @db.Text
-  is_active  Boolean?  @default(false)
-  created_at DateTime? @default(now()) @db.DateTime(0)
-  users      users?    @relation(fields: [user_id], references: [user_id], onUpdate: NoAction, map: "events_ibfk_1")
+  user_id    String?   @db.VarChar(191)
+  title      String?
+  content    String?
+  is_active  Int?      @default(0) @db.SmallInt
+  created_at DateTime? @default(now()) @db.Timestamp(6)
+  users      users?    @relation(fields: [user_id], references: [user_id], onUpdate: NoAction)
 
-  @@index([user_id], map: "user_id")
+  @@index([user_id])
 }
 
+model requests {
+  id        Int      @id @default(autoincrement())
+  title     String   @db.VarChar(191)
+  content   String?
+  status    String   @default("open") @db.VarChar(191)
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  room_id   Int?
+  rooms     rooms?   @relation(fields: [room_id], references: [room_id])
+
+  @@index([room_id])
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model rooms {
-  room_id                    Int           @id @default(autoincrement())
-  name                       String        @db.VarChar(50)
-  title                      String?       @db.Text
-  status                     rooms_status? @default(idle)
-  tag                        Json?
-  viewer_count               Int?          @default(0)
-  host_id                    String?
-  created_at                 DateTime?     @default(now()) @db.DateTime(0)
-  users_rooms_host_idTousers users?        @relation("rooms_host_idTousers", fields: [host_id], references: [user_id], onUpdate: NoAction, map: "rooms_ibfk_1")
-  users_users_room_idTorooms users[]       @relation("users_room_idTorooms")
+  room_id      Int        @id @default(autoincrement())
+  name         String     @db.VarChar(50)
+  title        String?
+  status       String?    @default("idle") @db.VarChar(255)
+  tag          Json?      @db.Json
+  viewer_count Int?       @default(0)
+  host_id      String?    @db.VarChar(191)
+  created_at   DateTime?  @default(now()) @db.Timestamp(6)
+  requests     requests[]
+  users        users[]
 
-  requests requests[]
-
-  @@index([host_id], map: "host_id")
+  @@index([host_id])
 }
 
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model shop_items {
-  items_id    String               @id @db.VarChar(20)
-  name        String               @db.VarChar(50)
-  category    shop_items_category?
+  items_id    String       @id @db.VarChar(20)
+  name        String       @db.VarChar(50)
+  category    String?      @db.VarChar(255)
   price       Int
-  description String?              @db.Text
-  image_url   String?              @db.VarChar(255)
-  is_active   Boolean?             @default(false)
-  stock       Int?                 @default(-1)
+  description String?
+  image_url   String?      @db.VarChar(255)
+  is_active   Int?         @default(0) @db.SmallInt
+  stock       Int?         @default(-1)
   user_items  user_items[]
 }
 
 model user_items {
   transaction_id Int        @id @default(autoincrement())
-  user_id        String
+  user_id        String     @db.VarChar(191)
   item_id        String     @db.VarChar(20)
   quantity       Int?       @default(1)
-  created_at     DateTime?  @default(now()) @db.DateTime(0)
-  users          users      @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "user_items_ibfk_1")
-  shop_items     shop_items @relation(fields: [item_id], references: [items_id], onDelete: Cascade, onUpdate: NoAction, map: "user_items_ibfk_2")
+  created_at     DateTime?  @default(now()) @db.Timestamp(6)
+  shop_items     shop_items @relation(fields: [item_id], references: [items_id], onDelete: Cascade, onUpdate: NoAction)
+  users          users      @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
 
-  @@index([item_id], map: "item_id")
-  @@index([user_id], map: "user_id")
+  @@index([item_id])
+  @@index([user_id])
 }
 
 model users {
-  user_id                    String       @id
-  name                       String       @db.VarChar(50)
-  bio                        String?      @db.Text
-  level                      Int?         @default(1)
-  coins                      Int?         @default(100)
-  avatar_url                 String?      @db.VarChar(255)
-  stealth                    Boolean?     @default(false)
-  accept_match               Boolean?     @default(false)
-  created_at                 DateTime?    @default(now()) @db.DateTime(0)
-  room_id                    Int?
-  events                     events[]
-  rooms_rooms_host_idTousers rooms[]      @relation("rooms_host_idTousers")
-  user_items                 user_items[]
-  rooms_users_room_idTorooms rooms?       @relation("users_room_idTorooms", fields: [room_id], references: [room_id], onUpdate: NoAction, map: "users_ibfk_1")
+  user_id      String       @id @db.VarChar(191)
+  name         String       @db.VarChar(50)
+  bio          String?
+  level        Int?         @default(1)
+  coins        Int?         @default(100)
+  avatar_url   String?      @db.VarChar(255)
+  stealth      Int?         @default(0) @db.SmallInt
+  accept_match Int?         @default(0) @db.SmallInt
+  created_at   DateTime?    @default(now()) @db.Timestamp(6)
+  room_id      Int?
+  events       events[]
+  user_items   user_items[]
+  rooms        rooms?       @relation(fields: [room_id], references: [room_id], onUpdate: NoAction)
 
-  @@index([room_id], map: "room_id")
-}
-
-enum shop_items_category {
-  popular
-  interactive
-  luxury
-  special
-}
-
-enum rooms_status {
-  idle
-  singing
-  battle
-}
-
-model requests {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String?  @db.Text
-  room_id   Int?     // 改名 roomNumber -> room_id
-  status    String   @default("open")
-  createdAt DateTime @default(now())
-
-  room rooms? @relation(fields: [room_id], references: [room_id])
-
-  @@map("requests")
+  @@index([room_id])
 }
