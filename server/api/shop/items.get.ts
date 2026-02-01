@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
   try {
     const items = await prisma.shop_items.findMany({
       where: {
-        is_active: true,
+        is_active: 1,
       },
     });
     return items;

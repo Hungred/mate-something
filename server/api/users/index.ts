@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
   try {
     const users = await prisma.users.findMany({
       include: {
-        rooms_users_room_idTorooms: {
+        rooms: {
           select: { name: true },
         },
       },
@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
 
     return users.map((u) => ({
       ...u,
-      room_name: u.rooms_users_room_idTorooms?.name ?? null,
+      room_name: u.rooms?.name ?? null,
     }));
   } catch (error) {
     console.error('資料庫讀取失敗:', error);

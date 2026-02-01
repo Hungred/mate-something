@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
 
     const result = await prisma.requests.findMany({
       include: {
-        room: {
+        rooms: {
           select: { name: true },
         },
       },
@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
 
     return result.map((item) => ({
       ...item,
-      room_name: item.room?.name || '',
+      room_name: item.rooms?.name || '',
     }));
   } catch (error) {
     throw createError({
